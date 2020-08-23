@@ -1,4 +1,5 @@
 import React, {createContext, useReducer} from 'react';
+import AppReducer from './AppReducer'
 
 // initial State 
 const initialState = {
@@ -11,15 +12,24 @@ const initialState = {
 };
 
 // Create Gobal Context 
-export const GlobalCentext = createContext(initialState);
+export const GlobalContext = createContext(initialState);
 
-// Provider
+// Provider Function
 export const GlobalProvider = ({ children })=> {
     const [state,dispatch] = useReducer(AppReducer,initialState);
 
-    return (<GlobalCentext.Provider value={{
-        transactions:state.transactions
+    // Actions
+    function deleteTransaction(id){
+        dispatch({
+            type:'DELETE_TRANSACTION',
+            payload: id
+        })
+    }
+
+    return (<GlobalContext.Provider value={{
+        transactions:state.transactions,
+        deleteTransaction
     }}>
         {children}
-    </GlobalCentext.Provider>)
+    </GlobalContext.Provider>)
 }
